@@ -7,3 +7,5 @@ CREATE TABLE USER (
   last_name VARCHAR(64) NOT NULL,
   first_name VARCHAR(64) NOT NULL
 );
+
+INSERT INTO USER VALUES (1,'user','pwd','lastname','firstName');

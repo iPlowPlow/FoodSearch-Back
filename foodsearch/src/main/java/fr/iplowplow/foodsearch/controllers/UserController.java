@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-public class SignupController {
+public class UserController {
 
     private final UserService userService;
 
     @Autowired
-    public SignupController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -25,7 +25,7 @@ public class SignupController {
      * @param signupDto DTO send to signup
      * @return SignupErrorEnum or OK
      */
-    @PostMapping("/signup")
+    @PostMapping("/user")
     public ResponseEntity<String> signUp(@Valid @RequestBody SignupDTO signupDto) {
 
         try{
@@ -36,4 +36,6 @@ public class SignupController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+
 }
