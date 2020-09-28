@@ -1,6 +1,6 @@
 package fr.iplowplow.foodsearch.services.user;
 
-import fr.iplowplow.foodsearch.dtos.signup.SignupDTO;
+import fr.iplowplow.foodsearch.dtos.SignupDTO;
 
 public interface UserService {
 

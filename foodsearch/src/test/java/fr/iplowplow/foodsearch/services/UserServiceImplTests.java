@@ -1,7 +1,7 @@
 package fr.iplowplow.foodsearch.services;
 
 import fr.iplowplow.foodsearch.daos.UserDAO;
-import fr.iplowplow.foodsearch.dtos.signup.SignupDTO;
+import fr.iplowplow.foodsearch.dtos.SignupDTO;
 import fr.iplowplow.foodsearch.entitys.User;
 import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
 import fr.iplowplow.foodsearch.services.user.UserService;
@@ -17,9 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -51,11 +48,9 @@ public class UserServiceImplTests {
     @Test
     public void shouldCreateUserSuccess(){
 
-        User user = new User(new Long(1),"username2","passsword","lastname","name");
-        List<User> l = new ArrayList<>();
-        when(userDAO.findByUsername(any())).thenReturn(l);
+        when(userDAO.findUserByUsername(any())).thenReturn(null);
 
-        SignupDTO signupDTO = new SignupDTO("username2","abcdjfdshfdk","lastname","firstname");
+        SignupDTO signupDTO = new SignupDTO("username200","password","lastname","firstname");
 
         try{
            userService.createUser(signupDTO);
@@ -70,17 +65,16 @@ public class UserServiceImplTests {
     @Test
     public void shouldCreateUserFail(){
 
-        User user = new User(new Long(1),"username2","passsword","lastname","name");
-        List<User> l = new ArrayList<>();
-        l.add(user);
-        when(userDAO.findByUsername(any())).thenReturn(l);
+        User user = new User(null,"username2","passsword","lastname","name");
+
+        when(userDAO.findUserByUsername(any())).thenReturn(user);
 
         SignupDTO signupDTO = new SignupDTO("username2","abcdjfdshfdk","lastname","firstname");
 
         try{
             userService.createUser(signupDTO);
         }catch (UserAlreadyExistException e){
-            verify(userDAO, times(1)).findByUsername(any());
+            verify(userDAO, times(1)).findUserByUsername(any());
 
         }
 

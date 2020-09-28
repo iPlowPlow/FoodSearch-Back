@@ -1,4 +1,4 @@
-package fr.iplowplow.foodsearch.dtos.signup;
+package fr.iplowplow.foodsearch.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

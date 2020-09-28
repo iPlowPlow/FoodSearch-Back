@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserDAO extends CrudRepository<User, Long> {
 
-    List<User> findByUsername(String username);
+    User findUserByUsername(String username);
 
-
+    User findUserByUsernameAndPassword(String username, String password);
 }

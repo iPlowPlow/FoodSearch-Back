@@ -1,9 +1,10 @@
 package fr.iplowplow.foodsearch.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.iplowplow.foodsearch.dtos.SignupDTO;
-import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
-import fr.iplowplow.foodsearch.services.user.UserService;
+import fr.iplowplow.foodsearch.dtos.AuthenticateDTO;
+import fr.iplowplow.foodsearch.dtos.UserDTO;
+import fr.iplowplow.foodsearch.exceptions.AuthenticateException;
+import fr.iplowplow.foodsearch.services.authenticate.AuthenticateService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,63 +19,60 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @WebMvcTest
 @AutoConfigureMockMvc
 @RunWith(MockitoJUnitRunner.class)
-public class UserControllerTests {
+public class AuthenticateControllerTests {
 
     @InjectMocks
-    private UserController userController;
+    private AuthenticateController authenticateController;
 
     @Autowired
     private MockMvc mockMvc;
 
     @Mock
-    private UserService userService;
+    private AuthenticateService authenticateService;
 
     @Before
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(authenticateController).build();
     }
 
     @Test
-    public void shouldCreateUser() throws Exception {
+    public void shouldAuthenticate() throws Exception {
+        AuthenticateDTO authenticateDTO = new AuthenticateDTO("username","aaaa");
 
-        SignupDTO signupDTO = new SignupDTO("username","abcdjfdshfdk","lastname","firstname");
-
-        doNothing().when(userService).createUser(any());
+       when(authenticateService.authenticate(any())).thenReturn(new UserDTO());
 
         mockMvc.perform( MockMvcRequestBuilders
-                .post("/api/public/user")
-                .content(new ObjectMapper().writeValueAsString(signupDTO))
+                .post("/api/public/authenticate")
+                .content(new ObjectMapper().writeValueAsString(authenticateDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).createUser(any());
+        verify(authenticateService, times(1)).authenticate(any());
 
     }
 
     @Test
-    public void shouldNotCreateUser() throws Exception {
+    public void shouldNotAuthenticate() throws Exception {
+        AuthenticateDTO authenticateDTO = new AuthenticateDTO("username","aaaa");
 
-        SignupDTO signupDTO = new SignupDTO("username","abcdjfdshfdk","lastname","firstname");
-
-        doThrow(new UserAlreadyExistException("Already")).when(userService).createUser(any());
+        when(authenticateService.authenticate(any())).thenThrow(new AuthenticateException(""));
 
         mockMvc.perform( MockMvcRequestBuilders
-                .post("/api/public/user")
-                .content(new ObjectMapper().writeValueAsString(signupDTO))
+                .post("/api/public/authenticate")
+                .content(new ObjectMapper().writeValueAsString(authenticateDTO))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
-        verify(userService, times(1)).createUser(any());
+        verify(authenticateService, times(1)).authenticate(any());
 
     }
-
 }

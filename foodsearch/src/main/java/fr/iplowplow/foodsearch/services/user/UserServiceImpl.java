@@ -1,17 +1,12 @@
 package fr.iplowplow.foodsearch.services.user;
 
 import fr.iplowplow.foodsearch.daos.UserDAO;
-import fr.iplowplow.foodsearch.dtos.signup.SignupDTO;
+import fr.iplowplow.foodsearch.dtos.SignupDTO;
 import fr.iplowplow.foodsearch.entitys.User;
 import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
 import fr.iplowplow.foodsearch.mappers.UserMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.mapstruct.factory.Mappers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Implement UserService.
@@ -32,9 +27,9 @@ public class UserServiceImpl implements UserService {
 
         User user= USER_MAPPER.signupDTOToUser(signupDTO);
 
-        List<User> userList = userDAO.findByUsername(user.getUsername());
+        User userFind = userDAO.findUserByUsername(user.getUsername());
 
-        if(userList.size()!=0){
+        if(userFind != null){
            throw new UserAlreadyExistException("User Already exit");
         }
 

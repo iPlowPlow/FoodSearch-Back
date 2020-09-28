@@ -1,6 +1,6 @@
 package fr.iplowplow.foodsearch.controllers;
 
-import fr.iplowplow.foodsearch.dtos.signup.SignupDTO;
+import fr.iplowplow.foodsearch.dtos.SignupDTO;
 import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
 import fr.iplowplow.foodsearch.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@RequestMapping("/api/public")
 public class UserController {
 
     private final UserService userService;

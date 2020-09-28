@@ -8,4 +8,4 @@ CREATE TABLE USER (
   first_name VARCHAR(64) NOT NULL
 );
 
-INSERT INTO USER VALUES (1,'user','pwd','lastname','firstName');
+INSERT INTO USER VALUES (999,'user','pwd','lastname','firstName');
