@@ -5,48 +5,27 @@ import fr.iplowplow.foodsearch.dtos.SignupDTO;
 import fr.iplowplow.foodsearch.entitys.User;
 import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
 import fr.iplowplow.foodsearch.services.user.UserService;
-import fr.iplowplow.foodsearch.services.user.UserServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 
-@WebMvcTest
-@AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
-public class UserServiceImplTests {
+@SpringBootTest
+class UserServiceImplTests {
 
     @Autowired
     private UserService userService;
 
-    @Mock
+    @MockBean
     private UserDAO userDAO;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        userService = new UserServiceImpl(userDAO);
-        mockMvc = MockMvcBuilders.standaloneSetup(userService).build();
-    }
-
     @Test
-    public void shouldCreateUserSuccess(){
+    void shouldCreateUserSuccess(){
 
         when(userDAO.findUserByUsername(any())).thenReturn(null);
 
@@ -63,7 +42,7 @@ public class UserServiceImplTests {
     }
 
     @Test
-    public void shouldCreateUserFail(){
+    void shouldCreateUserFail(){
 
         User user = new User(null,"username2","passsword","lastname","name");
 

@@ -5,48 +5,31 @@ import fr.iplowplow.foodsearch.dtos.AuthenticateDTO;
 import fr.iplowplow.foodsearch.entitys.User;
 import fr.iplowplow.foodsearch.exceptions.AuthenticateException;
 import fr.iplowplow.foodsearch.services.authenticate.AuthenticateService;
-import fr.iplowplow.foodsearch.services.authenticate.AuthenticateServiceImpl;
 import fr.iplowplow.foodsearch.services.token.JWTTokenService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@WebMvcTest
-@AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
-public class AuthenticateServiceImplTests {
+
+@SpringBootTest
+class AuthenticateServiceImplTests {
 
     @Autowired
     private AuthenticateService authenticateService;
 
-    @Mock
+    @MockBean
     private UserDAO userDAO;
 
-    @Mock
+    @MockBean
     private JWTTokenService jwtTokenService;
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Before
-    public void setup() {
-        authenticateService = new AuthenticateServiceImpl(userDAO, jwtTokenService);
-        mockMvc = MockMvcBuilders.standaloneSetup(authenticateService).build();
-    }
-
     @Test
-    public void shouldAuthenticateSuccess(){
+    void shouldAuthenticateSuccess(){
 
         User user = new User(null,"username10","password","lastname","name");
         when(userDAO.findUserByUsernameAndPassword(any(), any())).thenReturn(user);
@@ -65,7 +48,7 @@ public class AuthenticateServiceImplTests {
     }
 
     @Test
-    public void shouldAuthenticateFail(){
+    void shouldAuthenticateFail(){
 
         User user = new User(null,"username2","password","lastname","name");
         when(userDAO.findUserByUsernameAndPassword(any(), any())).thenReturn(null);

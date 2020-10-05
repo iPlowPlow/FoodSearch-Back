@@ -4,28 +4,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.iplowplow.foodsearch.dtos.SignupDTO;
 import fr.iplowplow.foodsearch.exceptions.UserAlreadyExistException;
 import fr.iplowplow.foodsearch.services.user.UserService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@WebMvcTest
 @AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
-public class UserControllerTests {
+@SpringBootTest
+class UserControllerTests {
 
     @InjectMocks
     private UserController userController;
@@ -33,16 +28,11 @@ public class UserControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-    }
-
     @Test
-    public void shouldCreateUser() throws Exception {
+    void shouldCreateUser() throws Exception {
 
         SignupDTO signupDTO = new SignupDTO("username","abcdjfdshfdk","lastname","firstname");
 
@@ -60,7 +50,7 @@ public class UserControllerTests {
     }
 
     @Test
-    public void shouldNotCreateUser() throws Exception {
+    void shouldNotCreateUser() throws Exception {
 
         SignupDTO signupDTO = new SignupDTO("username","abcdjfdshfdk","lastname","firstname");
 

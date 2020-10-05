@@ -5,28 +5,25 @@ import fr.iplowplow.foodsearch.dtos.AuthenticateDTO;
 import fr.iplowplow.foodsearch.dtos.UserDTO;
 import fr.iplowplow.foodsearch.exceptions.AuthenticateException;
 import fr.iplowplow.foodsearch.services.authenticate.AuthenticateService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+
 @AutoConfigureMockMvc
-@RunWith(MockitoJUnitRunner.class)
-public class AuthenticateControllerTests {
+@SpringBootTest
+class AuthenticateControllerTests {
 
     @InjectMocks
     private AuthenticateController authenticateController;
@@ -34,16 +31,11 @@ public class AuthenticateControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockBean
     private AuthenticateService authenticateService;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(authenticateController).build();
-    }
-
     @Test
-    public void shouldAuthenticate() throws Exception {
+    void shouldAuthenticate() throws Exception {
         AuthenticateDTO authenticateDTO = new AuthenticateDTO("username","aaaa");
 
        when(authenticateService.authenticate(any())).thenReturn(new UserDTO());
@@ -60,7 +52,7 @@ public class AuthenticateControllerTests {
     }
 
     @Test
-    public void shouldNotAuthenticate() throws Exception {
+    void shouldNotAuthenticate() throws Exception {
         AuthenticateDTO authenticateDTO = new AuthenticateDTO("username","aaaa");
 
         when(authenticateService.authenticate(any())).thenThrow(new AuthenticateException(""));
