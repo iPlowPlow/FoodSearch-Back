@@ -35,7 +35,6 @@ public class AuthenticateServiceImpl implements AuthenticateService {
     public UserDTO authenticate(AuthenticateDTO authenticateDTO) {
 
         User user = USER_MAPPER.authenticateDTOToUser(authenticateDTO);
-
         User userFind = userDAO.findUserByUsernameAndPassword(user.getUsername(), user.getPassword());
 
         if(userFind == null){
